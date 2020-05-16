@@ -32,10 +32,10 @@ void AddBoseHubbard(py::module &subm) {
   py::class_<BoseHubbard, AbstractOperator>(
       subm, "BoseHubbard",
       R"EOF(A Bose Hubbard model Hamiltonian operator.)EOF")
-      .def(py::init<std::shared_ptr<const AbstractHilbert>, double, double,
+      .def(py::init<std::shared_ptr<const AbstractHilbert>, double, double, double,
                     double>(),
            py::keep_alive<1, 2>(), py::arg("hilbert"), py::arg("U"),
-           py::arg("V") = 0., py::arg("mu") = 0., R"EOF(
+           py::arg("V") = 0., py::arg("J") = 0., py::arg("mu") = 0., R"EOF(
            Constructs a new ``BoseHubbard`` given a hilbert space and a Hubbard
            interaction strength. The chemical potential and the hopping term can
            be specified as well.
@@ -43,7 +43,8 @@ void AddBoseHubbard(py::module &subm) {
            Args:
                hilbert: Hilbert space the operator acts on.
                U: The Hubbard interaction term.
-               V: The hopping term.
+               J: The hopping term.
+               V: The interaction term between neighboring sites 
                mu: The chemical potential.
 
            Examples:
