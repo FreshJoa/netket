@@ -22,6 +22,7 @@
 
 #include <Eigen/Dense>
 #include <nonstd/optional.hpp>
+#include <math.h>
 
 #include "Machine/machine.hpp"
 #include "Operator/abstract_operator.hpp"
@@ -34,6 +35,9 @@
 #include "Utils/parallel_utils.hpp"
 #include "Utils/random_utils.hpp"
 #include "common_types.hpp"
+
+
+
 
 
 namespace netket {
@@ -162,8 +166,10 @@ class VariationalMonteCarlo {
   /**
    * Advances the simulation by performing `steps` VMC iterations.
    */
-  void Advance(Index steps = 1) {
+  std::pair<double, double> Advance(Index steps = 1) {
     assert(steps > 0);
+    double return_energy;
+    double return_variance;
     for (Index i = 0; i < steps; ++i) {
       vmc_data_ = vmc::ComputeSamples(sampler_, nsamples_node_, ndiscard_);
 
@@ -172,6 +178,10 @@ class VariationalMonteCarlo {
           vmc::Variance(vmc_data_, psi_, ham_, energy.mean, locvals_);
 
       observable_stats_["Energy"] = energy;
+      return_energy = double(energy.mean);
+      return_variance = double(variance.mean);
+
+
       observable_stats_["EnergyVariance"] = variance;
 
       if (target_ == "energy") {
@@ -184,10 +194,13 @@ class VariationalMonteCarlo {
 
       UpdateParameters();
     }
+    return std::make_pair(return_energy, return_variance);
   }
 
+
+
   void Run(const std::string &output_prefix,
-           nonstd::optional<Index> n_iter = nonstd::nullopt,
+           nonstd::optional<Index> n_iter = nonstd::nullopt, // n_iter - ilość iteracji
            Index step_size = 1, Index save_params_every = 50) {
     assert(n_iter > 0);
     assert(step_size > 0);
@@ -198,23 +211,42 @@ class VariationalMonteCarlo {
       writer.emplace(output_prefix + ".log", output_prefix + ".wf",
                      save_params_every);
     }
-    opt_.Reset();
+    opt_.Reset(); // opt_ - optimizer
+    std::pair<double, double> last_energy = Advance(step_size);
+    Index step = 0;
+    int waiting_step = 0;
+    while (!n_iter.has_value() || step < *n_iter) {
 
-    for (Index step = 0; !n_iter.has_value() || step < *n_iter;
-         step += step_size) {
-      Advance(step_size);
+      std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
+
+
+      if( actual_energy.second < last_energy.second){
+        last_energy = actual_energy;
+        step += step_size;
+        waiting_step = 0;
+      }
+      else if((actual_energy.second + 0.1) > last_energy.second){
+        waiting_step ++;
+        continue;
+      }
+      else if(waiting_step > 10){
+        waiting_step = 0;
+        step += step_size;
+      }
+
       ComputeObservables();
 
       // writer.has_value() iff the MPI rank is 0, so the output is only
       // written once
-      if (writer.has_value()) {
-        auto obs_data = json(observable_stats_);
-        obs_data["Acceptance"] = sampler_.Acceptance();
 
-        writer->WriteLog(step, obs_data);
-        writer->WriteState(step, psi_);
-      }
-      MPI_Barrier(MPI_COMM_WORLD);
+     if (writer.has_value()) {
+            auto obs_data = json(observable_stats_);
+            obs_data["Acceptance"] = sampler_.Acceptance();
+
+            writer->WriteLog(step, obs_data);
+            writer->WriteState(step, psi_);
+          }
+          MPI_Barrier(MPI_COMM_WORLD);
     }
   }
 

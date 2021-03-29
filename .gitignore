@@ -44,3 +44,5 @@ Thumbs.db
 # Run and Build Directories
 run/
 build/
+
+myvenv
