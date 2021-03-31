@@ -19,6 +19,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <limits>
+
 
 #include <Eigen/Dense>
 #include <nonstd/optional.hpp>
@@ -220,18 +222,17 @@ class VariationalMonteCarlo {
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
 
 
-      if( actual_energy.second < last_energy.second){
+      if(actual_energy.first < last_energy.first + 0.2){
         last_energy = actual_energy;
         step += step_size;
         waiting_step = 0;
       }
-      else if((actual_energy.second + 0.1) > last_energy.second){
-        waiting_step ++;
-        continue;
-      }
       else if(waiting_step > 10){
         waiting_step = 0;
         step += step_size;
+      }else{
+        waiting_step++;
+        continue;
       }
 
       ComputeObservables();
