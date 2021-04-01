@@ -227,9 +227,8 @@ class VariationalMonteCarlo {
         step += step_size;
         waiting_step = 0;
       }
-      else if(waiting_step > 10){
-        waiting_step = 0;
-        step += step_size;
+      else if(waiting_step > 50){
+        break;
       }else{
         waiting_step++;
         continue;
