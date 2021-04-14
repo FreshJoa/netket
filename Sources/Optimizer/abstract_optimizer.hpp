@@ -30,6 +30,11 @@ class AbstractOptimizer {
 
   virtual void Reset() = 0;
 
+  void SetLearningRate(double change){
+    change*5;
+  }
+
+
   void Init(int npar, bool is_holomorphic) {
     is_holomorphic_ = is_holomorphic;
 

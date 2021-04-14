@@ -68,6 +68,10 @@ class Sgd : public AbstractOptimizer {
     assert(decay_factor <= 1.00001);
     decay_factor_ = decay_factor;
   }
+  void SetLearningRate(double change){
+       double new_learning_rate = change*eta_;
+       eta_= new_learning_rate;
+  }
 
   void Reset() override {}
 };

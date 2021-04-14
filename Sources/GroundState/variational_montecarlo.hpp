@@ -55,6 +55,8 @@ class VariationalMonteCarlo {
   AbstractMachine &psi_;
 
 
+
+
   int totalnodes_;
   int mynode_;
 
@@ -217,6 +219,7 @@ class VariationalMonteCarlo {
     std::pair<double, double> last_energy = Advance(step_size);
     Index step = 0;
     int waiting_step = 0;
+    int max = 10;
     while (!n_iter.has_value() || step < *n_iter) {
 
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
@@ -226,9 +229,14 @@ class VariationalMonteCarlo {
         last_energy = actual_energy;
         step += step_size;
         waiting_step = 0;
+        max = 10;
       }
       else if(waiting_step > 50){
         break;
+      }
+      else if(waiting_step > max){
+        opt_.SetLearningRate(0.001);
+        max += 10;
       }else{
         waiting_step++;
         continue;
