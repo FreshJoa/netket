@@ -73,6 +73,10 @@ class Sgd : public AbstractOptimizer {
        eta_= new_learning_rate;
   }
 
+  double GetLearningRate(){
+    return eta_;
+  }
+
   void Reset() override {}
 };
 

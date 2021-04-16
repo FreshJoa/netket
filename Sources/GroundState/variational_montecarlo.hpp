@@ -219,24 +219,24 @@ class VariationalMonteCarlo {
     std::pair<double, double> last_energy = Advance(step_size);
     Index step = 0;
     int waiting_step = 0;
-    int max = 10;
+    double learning_rate = 0.0;
     while (!n_iter.has_value() || step < *n_iter) {
 
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
-
+      learning_rate = opt_.GetLearningRate();
 
       if(actual_energy.first < last_energy.first + 0.2){
         last_energy = actual_energy;
         step += step_size;
         waiting_step = 0;
-        max = 10;
       }
-      else if(waiting_step > 50){
+      else if(learning_rate < 0.0000000001){
         break;
       }
-      else if(waiting_step > max){
-        opt_.SetLearningRate(0.001);
-        max += 10;
+      else if(waiting_step > 5){
+        opt_.SetLearningRate(0.01);
+        waiting_step = 0;
+        continue;
       }else{
         waiting_step++;
         continue;

@@ -34,6 +34,10 @@ class AbstractOptimizer {
     change*5;
   }
 
+   double GetLearningRate(){
+       double k = 5.5*7.6;
+       return k;
+   }
 
   void Init(int npar, bool is_holomorphic) {
     is_holomorphic_ = is_holomorphic;
