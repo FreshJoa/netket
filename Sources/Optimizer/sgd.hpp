@@ -58,6 +58,8 @@ class Sgd : public AbstractOptimizer {
     assert(npar_ > 0);
 
     eta_ *= decay_factor_;
+    InfoMessage() << "Real Learning Rate = " << eta_ << std::endl;
+
 
     for (int i = 0; i < npar_; i++) {
       pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
