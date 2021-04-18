@@ -227,12 +227,14 @@ class VariationalMonteCarlo {
       InfoMessage() << "Actual learning rate vmc " << learning_rate <<std::endl;
 
       if(actual_energy.first < last_energy.first + 0.2){
+        InfoMessage() << "next energy " <<std::endl;
+
         last_energy = actual_energy;
         step += step_size;
         opt_.SetLearningRate(0.01);
         waiting_step = 0;
       }
-      else if(learning_rate < 0.0000000001){
+      if(learning_rate < 0.0000000001){
         break;
       }
       else if(waiting_step > 5){
