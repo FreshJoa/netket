@@ -235,6 +235,9 @@ class VariationalMonteCarlo {
         waiting_step = 0;
       }
       if(learning_rate < 0.0000000001){
+         InfoMessage() << "learning rate " << learning_rate <<std::endl;
+         InfoMessage() << "break " <<std::endl;
+
         break;
       }
       else if(waiting_step > 5){
