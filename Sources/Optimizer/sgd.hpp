@@ -58,7 +58,6 @@ class Sgd : public AbstractOptimizer {
     assert(npar_ > 0);
 
     eta_ *= decay_factor_;
-    InfoMessage() << "Real Learning Rate = " << eta_ << std::endl;
 
 
     for (int i = 0; i < npar_; i++) {
@@ -72,7 +71,6 @@ class Sgd : public AbstractOptimizer {
   }
   void SetLearningRate(double change){
        eta_ *= change;
-       InfoMessage() << "modif Learning Rate = " << eta_ << std::endl;
   }
 
   double GetLearningRate(){
