@@ -67,6 +67,13 @@ class RMSProp : public AbstractOptimizer {
     }
   }
 
+  void SetLearningRate(double change){
+          change*5;
+    }
+     double GetLearningRate(){
+          return 7.0;
+        }
+
   void Reset() override { st_ = Eigen::VectorXd::Zero(npar_); }
 };
 

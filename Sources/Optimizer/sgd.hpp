@@ -71,8 +71,8 @@ class Sgd : public AbstractOptimizer {
     decay_factor_ = decay_factor;
   }
   void SetLearningRate(double change){
-       double new_learning_rate = change*eta_;
-       eta_= new_learning_rate;
+       eta_ *= change;
+       InfoMessage() << "modif Learning Rate = " << eta_ << std::endl;
   }
 
   double GetLearningRate(){

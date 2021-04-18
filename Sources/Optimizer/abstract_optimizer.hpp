@@ -30,14 +30,9 @@ class AbstractOptimizer {
 
   virtual void Reset() = 0;
 
-  void SetLearningRate(double change){
-    change*5;
-  }
+  virtual void SetLearningRate(double change) =0;
 
-   double GetLearningRate(){
-       double k = 5.5*7.6;
-       return k;
-   }
+   virtual double GetLearningRate() = 0;
 
   void Init(int npar, bool is_holomorphic) {
     is_holomorphic_ = is_holomorphic;

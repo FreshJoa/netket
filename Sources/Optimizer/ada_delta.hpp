@@ -74,7 +74,12 @@ class AdaDelta : public AbstractOptimizer {
 
     Edx2_ = rho_ * Edx2_ + (1. - rho_) * Dx.cwiseAbs2();
   }
-
+  void SetLearningRate(double change){
+        change*5;
+  }
+ double GetLearningRate(){
+      return 7.0;
+    }
   void Reset() override {
     Eg2_ = Eigen::VectorXd::Zero(npar_);
     Edx2_ = Eigen::VectorXd::Zero(npar_);

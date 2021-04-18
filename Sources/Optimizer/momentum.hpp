@@ -62,7 +62,13 @@ class Momentum : public AbstractOptimizer {
       pars(i) -= eta_ * mt_(i);
     }
   }
+  void SetLearningRate(double change){
+          change*5;
+    }
 
+ double GetLearningRate(){
+      return 7.0;
+    }
   void Reset() override { mt_ = Eigen::VectorXd::Zero(npar_); }
 };
 

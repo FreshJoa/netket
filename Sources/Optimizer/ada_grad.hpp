@@ -64,7 +64,12 @@ class AdaGrad : public AbstractOptimizer {
       pars(i) -= eta_ * grad(i) / std::sqrt(Gt_(i) + epscut_);
     }
   }
-
+void SetLearningRate(double change){
+        change*5;
+  }
+   double GetLearningRate(){
+        return 7.0;
+      }
   void Reset() override { Gt_ = Eigen::VectorXd::Zero(npar_); }
 };
 

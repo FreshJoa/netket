@@ -89,7 +89,12 @@ class AdaMax : public AbstractOptimizer {
       pars(i) -= eta * mt_(i) / ut_(i);
     }
   }
-
+void SetLearningRate(double change){
+        change*5;
+  }
+  double GetLearningRate(){
+      return 7.0;
+    }
   void Reset() override {
     ut_ = Eigen::VectorXd::Zero(npar_);
     mt_ = Eigen::VectorXd::Zero(npar_);
