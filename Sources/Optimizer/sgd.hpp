@@ -40,7 +40,7 @@ class Sgd : public AbstractOptimizer {
   std::string params_output_file_;
 
  public:
-  explicit Sgd(double learning_rate, double l2reg = 0,
+   Sgd(double learning_rate, double l2reg = 0,
                double decay_factor = 1.0, std::string params_output_file = "test.csv")
       : eta_(learning_rate), params_output_file_(params_output_file), l2reg_(l2reg) {
     npar_ = -1;
