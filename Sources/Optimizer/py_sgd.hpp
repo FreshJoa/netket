@@ -20,6 +20,7 @@
 #include <pybind11/stl_bind.h>
 #include <complex>
 #include <vector>
+#include <string>
 #include "sgd.hpp"
 
 namespace py = pybind11;
@@ -44,8 +45,8 @@ void AddSgd(py::module &subm) {
         and the second one is the possibility to set a decay
         factor $$ \gamma \leq 1 $$ for the learning rate, such that
         at iteration $$ n $$ the learning rate is $$ \eta \gamma^n $$.  )EOF")
-      .def(py::init<double, double, double>(), py::arg("learning_rate"),
-           py::arg("l2_reg") = 0, py::arg("decay_factor") = 1.0, R"EOF(
+      .def(py::init<double, double, double, std::string>(), py::arg("learning_rate"),
+           py::arg("l2_reg") = 0, py::arg("decay_factor") = 1.0, py::arg("params_output_file") = "test,csv",  R"EOF(
            Constructs a new ``Sgd`` optimizer.
 
            Args:

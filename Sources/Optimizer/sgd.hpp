@@ -69,14 +69,11 @@ class Sgd : public AbstractOptimizer {
 
 
     for (int i = 0; i < npar_; i++) {
-      InfoMessage() << "param "<<pars(i) << std::endl;
       tmp_pars =(double) pars(i);
       pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
-      InfoMessage() << "updated param "<<pars(i) <<  "\t "<< std::endl;
       tmp_pars -= (double) pars(i);
       fout << tmp_pars << ", ";
     }
-    InfoMessage() << "\n"<< std::endl;
     fout << "\n";
 
   }
