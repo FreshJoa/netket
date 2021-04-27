@@ -15,6 +15,9 @@
 #ifndef NETKET_SGD_HPP
 #define NETKET_SGD_HPP
 
+#include <iostream>
+#include <fstream>
+#include <string>
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <cassert>
@@ -34,10 +37,12 @@ class Sgd : public AbstractOptimizer {
 
   double decay_factor_;
 
+  std::string params_output_file_;
+
  public:
   explicit Sgd(double learning_rate, double l2reg = 0,
-               double decay_factor = 1.0)
-      : eta_(learning_rate), l2reg_(l2reg) {
+               double decay_factor = 1.0, std::string params_output_file = "test.csv")
+      : eta_(learning_rate), params_output_file_(params_output_file), l2reg_(l2reg) {
     npar_ = -1;
     SetDecayFactor(decay_factor);
     PrintParameters();
@@ -56,13 +61,19 @@ class Sgd : public AbstractOptimizer {
   void Update(const Eigen::VectorXd &grad,
               Eigen::Ref<Eigen::VectorXd> pars) override {
     assert(npar_ > 0);
+    std::fstream fout;
+    fout.open(params_output_file_, std::ios::out | std::ios::app);
 
     eta_ *= decay_factor_;
+    Eigen::Ref<Eigen::VectorXd> tmp_pars = pars;
 
 
     for (int i = 0; i < npar_; i++) {
       pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
+      tmp_pars(i) -= pars(i);
+      fout << tmp_pars(i) << ", ";
     }
+    fout << "\n";
   }
 
   void SetDecayFactor(double decay_factor) {
