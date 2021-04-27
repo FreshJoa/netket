@@ -65,15 +65,20 @@ class Sgd : public AbstractOptimizer {
     fout.open(params_output_file_, std::ios::out | std::ios::app);
 
     eta_ *= decay_factor_;
-    Eigen::Ref<Eigen::VectorXd> tmp_pars = pars;
+    double tmp_pars = 0.0;
 
 
     for (int i = 0; i < npar_; i++) {
+      InfoMessage() << "param "<<pars(i) << std::endl;
+      tmp_pars =(double) pars(i);
       pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
-      tmp_pars(i) -= pars(i);
-      fout << tmp_pars(i) << ", ";
+      InfoMessage() << "updated param "<<pars(i) <<  "\t "<< std::endl;
+      tmp_pars -= (double) pars(i);
+      fout << tmp_pars << ", ";
     }
+    InfoMessage() << "\n"<< std::endl;
     fout << "\n";
+
   }
 
   void SetDecayFactor(double decay_factor) {
