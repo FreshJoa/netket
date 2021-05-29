@@ -217,7 +217,7 @@ class VariationalMonteCarlo {
     }
 
      std::fstream fout_lr;
-     std::string lr_output_file = "learning_rate_" + output_prefix + ".csv";
+     std::string lr_output_file = output_prefix + "learning_rate.csv";
      fout_lr.open(lr_output_file, std::ios::out | std::ios::app);
 
 
