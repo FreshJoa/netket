@@ -226,7 +226,7 @@ class VariationalMonteCarlo {
     Index step = 0;
     int waiting_step = 0;
     double learning_rate = 0.0;
-    double divided_lr = 10.0;
+    double divided_lr = 20.0;
     while (!n_iter.has_value() || step < *n_iter) {
 
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
