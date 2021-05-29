@@ -245,10 +245,10 @@ class VariationalMonteCarlo {
         double new_lr = opt_.GetLearningRate();
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
         waiting_step = 0;
-        continue;
+//        continue;
       }else{
         waiting_step++;
-        continue;
+//        continue;
       }
 
       ComputeObservables();
