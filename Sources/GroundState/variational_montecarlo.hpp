@@ -217,7 +217,7 @@ class VariationalMonteCarlo {
     }
 
      std::fstream fout_lr;
-     std::string lr_output_file = output_prefix + "learning_rate.csv";
+     std::string lr_output_file = output_prefix + "_learning_rate.csv";
      fout_lr.open(lr_output_file, std::ios::out | std::ios::app);
 
 
@@ -236,10 +236,6 @@ class VariationalMonteCarlo {
       if(actual_energy.first < last_energy.first + 0.1){
         last_energy = actual_energy;
         waiting_step = 0;
-        opt_.SetLearningRate((double)1.0/divided_lr);
-        double new_lr = opt_.GetLearningRate();
-        fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
-        InfoMessage() << "write new lr "<< new_lr << "\n";
       }
       else if(learning_rate < 0.00000000000001){
         break;
