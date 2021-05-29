@@ -215,33 +215,45 @@ class VariationalMonteCarlo {
       writer.emplace(output_prefix + ".log", output_prefix + ".wf",
                      save_params_every);
     }
+
+     std::fstream fout_lr;
+     std::string lr_output_file = "learning_rate_" + output_prefix + ".csv";
+     fout_lr.open(lr_output_file, std::ios::out | std::ios::app);
+
+
     opt_.Reset(); // opt_ - optimizer
     std::pair<double, double> last_energy = Advance(step_size);
     Index step = 0;
-//    int waiting_step = 0;
-//    double learning_rate = 0.0;
+    int waiting_step = 0;
+    double learning_rate = 0.0;
+    double divided_lr = 2.0;
     while (!n_iter.has_value() || step < *n_iter) {
 
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
       step += step_size;
-//      learning_rate = opt_.GetLearningRate();
-//
-//      if(actual_energy.first < last_energy.first + 0.1){
-//        last_energy = actual_energy;
-//        step += step_size;
-//        waiting_step = 0;
-//      }
-//      else if(learning_rate < 0.00000000000001){
-//        break;
-//      }
-//      else if(waiting_step > 10){
-//        opt_.SetLearningRate(0.01);
-//        waiting_step = 0;
-//        continue;
-//      }else{
-//        waiting_step++;
-//        continue;
-//      }
+      learning_rate = opt_.GetLearningRate();
+
+      if(actual_energy.first < last_energy.first + 0.1){
+        last_energy = actual_energy;
+        waiting_step = 0;
+        opt_.SetLearningRate((double)1.0/divided_lr);
+        double new_lr = opt_.GetLearningRate();
+        fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
+        waiting_step = 0;
+      }
+      else if(learning_rate < 0.00000000000001){
+        break;
+      }
+      else if(waiting_step > 10){
+        opt_.SetLearningRate((double)1.0/divided_lr);
+        double new_lr = opt_.GetLearningRate();
+        fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
+        waiting_step = 0;
+        continue;
+      }else{
+        waiting_step++;
+        continue;
+      }
 
       ComputeObservables();
 
