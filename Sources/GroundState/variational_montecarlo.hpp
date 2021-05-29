@@ -239,7 +239,7 @@ class VariationalMonteCarlo {
         opt_.SetLearningRate((double)1.0/divided_lr);
         double new_lr = opt_.GetLearningRate();
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
-        waiting_step = 0;
+        InfoMessage() << "write new lr "<< new_lr << "\n";
       }
       else if(learning_rate < 0.00000000000001){
         break;
