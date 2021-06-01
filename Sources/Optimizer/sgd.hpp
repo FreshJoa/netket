@@ -65,14 +65,10 @@ class Sgd : public AbstractOptimizer {
     fout.open(params_output_file_, std::ios::out | std::ios::app);
 
     eta_ *= decay_factor_;
-    double tmp_pars = 0.0;
-
 
     for (int i = 0; i < npar_; i++) {
-      tmp_pars =(double) pars(i);
       pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
-      tmp_pars -= (double) pars(i);
-      fout << tmp_pars << ", ";
+      fout <<  (double) pars(i) << ", ";
     }
     fout << "\n";
 
