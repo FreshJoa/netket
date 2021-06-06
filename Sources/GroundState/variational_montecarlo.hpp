@@ -224,7 +224,8 @@ class VariationalMonteCarlo {
     opt_.Reset(); // opt_ - optimizer
     std::pair<double, double> last_energy = Advance(step_size);
     auto pars = psi_.GetParameters();
-    UpdateParameters();
+    auto energy_grad = UpdateParameters();
+    auto fine_energy_grad = energy_grad;
 
 
     Index step = 0;
@@ -243,6 +244,9 @@ class VariationalMonteCarlo {
         last_energy = actual_energy;
         waiting_step = 0;
         pars = psi_.GetParameters();
+        fine_energy_grad = energy_grad;
+        energy_grad = UpdateParameters();
+
       }
       else if(learning_rate < 0.00000000000001){
         break;
@@ -253,13 +257,14 @@ class VariationalMonteCarlo {
         double new_lr = opt_.GetLearningRate();
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
         waiting_step = 0;
+        UpdateParametersAfterChangeLr(fine_energy_grad);
 //        continue;
       }else{
         waiting_step++;
+        energy_grad = UpdateParameters();
+
 //        continue;
       }
-      UpdateParameters();
-
 
 
       ComputeObservables();
@@ -278,7 +283,7 @@ class VariationalMonteCarlo {
     }
   }
 
-  void UpdateParameters() {
+  Eigen::VectorXcd UpdateParameters() {
     auto pars = psi_.GetParameters();
 
     Eigen::VectorXcd deltap(npar_);
@@ -295,7 +300,23 @@ class VariationalMonteCarlo {
     psi_.SetParameters(pars);
 
     MPI_Barrier(MPI_COMM_WORLD);
+
+    return deltap;
   }
+
+
+    void UpdateParametersAfterChangeLr(Eigen::VectorXcd deltap) {
+      auto pars = psi_.GetParameters();
+
+      opt_.Update(deltap, pars);
+
+      SendToAll(pars);
+
+      psi_.SetParameters(pars);
+
+      MPI_Barrier(MPI_COMM_WORLD);
+
+    }
 
   void setSrParameters(double diag_shift = 0.01, bool use_iterative = false,
                        bool use_cholesky = true) {
