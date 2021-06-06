@@ -237,6 +237,7 @@ class VariationalMonteCarlo {
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
       step += step_size;
       learning_rate = opt_.GetLearningRate();
+      InfoMessage()<< last_energy.second << std::endl;
 
       if(actual_energy.first < (last_energy.first + last_energy.second)){
         last_energy = actual_energy;
