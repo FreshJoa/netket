@@ -25,8 +25,7 @@ class AbstractOptimizer {
  public:
   virtual void Init(int npar) = 0;
 
-  virtual void Update(const Eigen::VectorXd &grad,
-                      Eigen::Ref<Eigen::VectorXd> pars) = 0;
+  virtual void Update(const Eigen::VectorXd &grad, Eigen::Ref<Eigen::VectorXd> pars) = 0;
 
   virtual void Reset() = 0;
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e54f0d5f-e4bb-48ab-91cf-04679a4511df" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PATH_TO_GIT" value="https://github.com/FreshJoa/netket.git" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="2" />
+  </component>
+  <component name="ProjectId" id="1qROMyS10gurnwepIckHgkNnv6D" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Magisterka/Semestr3/MPS/projekt" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e54f0d5f-e4bb-48ab-91cf-04679a4511df" name="Default Changelist" comment="" />
+      <created>1617038893407</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1617038893407</updated>
+      <workItem from="1617038897474" duration="156000" />
+      <workItem from="1617039063586" duration="7068000" />
+      <workItem from="1617181241678" duration="2810000" />
+      <workItem from="1618392105853" duration="1418000" />
+      <workItem from="1618393871239" duration="1342000" />
+      <workItem from="1618563267901" duration="3623000" />
+      <workItem from="1618662458513" duration="12000" />
+      <workItem from="1618681165712" duration="4043000" />
+      <workItem from="1618736241692" duration="4595000" />
+      <workItem from="1619513238183" duration="4628000" />
+      <workItem from="1619521863039" duration="242000" />
+      <workItem from="1619524157159" duration="9008000" />
+      <workItem from="1619878136108" duration="76000" />
+      <workItem from="1620293736360" duration="2069000" />
+      <workItem from="1620769668285" duration="624000" />
+      <workItem from="1621241803612" duration="2085000" />
+      <workItem from="1621793105788" duration="16000" />
+      <workItem from="1622298313092" duration="7132000" />
+      <workItem from="1622376908431" duration="264000" />
+      <workItem from="1622546355951" duration="2069000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
