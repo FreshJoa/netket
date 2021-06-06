@@ -67,8 +67,9 @@ class Sgd : public AbstractOptimizer {
     eta_ *= decay_factor_;
 
     for (int i = 0; i < npar_; i++) {
-      pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
       fout <<  (double) pars(i) << ", ";
+      pars(i) = pars(i) - (grad(i) + l2reg_ * pars(i)) * eta_;
+//      fout <<  (double) pars(i) << ", ";
     }
     fout << "\n";
 
