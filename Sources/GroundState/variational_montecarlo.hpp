@@ -25,6 +25,7 @@
 #include <Eigen/Dense>
 #include <nonstd/optional.hpp>
 #include <math.h>
+#include <cmath>
 
 #include "Machine/machine.hpp"
 #include "Operator/abstract_operator.hpp"
@@ -239,7 +240,7 @@ class VariationalMonteCarlo {
       step += step_size;
       learning_rate = opt_.GetLearningRate();
 
-      if(actual_energy.first < (last_energy.first + last_energy.second)){
+      if(actual_energy.first < (last_energy.first + std::sqrt(last_energy.second))){
         last_energy = actual_energy;
         waiting_step = 0;
         pars = psi_.GetParameters();
