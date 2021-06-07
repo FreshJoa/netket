@@ -238,7 +238,6 @@ class VariationalMonteCarlo {
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
       step += step_size;
       learning_rate = opt_.GetLearningRate();
-      InfoMessage()<< last_energy.second << std::endl;
 
       if(actual_energy.first < (last_energy.first + last_energy.second)){
         last_energy = actual_energy;
@@ -251,7 +250,7 @@ class VariationalMonteCarlo {
       else if(learning_rate < 0.00000000000001){
         break;
       }
-      else if(waiting_step > 10){
+      else{
         opt_.SetLearningRate((double)1.0/divided_lr);
         psi_.SetParameters(pars);
         double new_lr = opt_.GetLearningRate();
@@ -259,12 +258,8 @@ class VariationalMonteCarlo {
         waiting_step = 0;
         UpdateParametersAfterChangeLr(fine_energy_grad);
 //        continue;
-      }else{
-        waiting_step++;
-        energy_grad = UpdateParameters();
+        }
 
-//        continue;
-      }
 
 
       ComputeObservables();
