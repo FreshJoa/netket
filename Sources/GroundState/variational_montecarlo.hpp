@@ -227,6 +227,7 @@ class VariationalMonteCarlo {
     auto pars = psi_.GetParameters();
     auto energy_grad = UpdateParameters();
     auto fine_energy_grad = energy_grad;
+    auto fine_visible_neuron_val = sampler_.Visible();
 
 
     Index step = 0;
@@ -240,11 +241,13 @@ class VariationalMonteCarlo {
       step += step_size;
       learning_rate = opt_.GetLearningRate();
 
-      if(actual_energy.first < (last_energy.first + std::sqrt(last_energy.second))){
+      if(actual_energy.first < (last_energy.first + 3.0*std::sqrt(last_energy.second))){
         last_energy = actual_energy;
         waiting_step = 0;
         pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
+        fine_visible_neuron_val = sampler_.Visible();
+
         energy_grad = UpdateParameters();
 
       }
@@ -254,6 +257,7 @@ class VariationalMonteCarlo {
       else{
         opt_.SetLearningRate((double)1.0/divided_lr);
         psi_.SetParameters(pars);
+        sampler_.SetVisible(fine_visible_neuron_val);
         double new_lr = opt_.GetLearningRate();
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
         waiting_step = 0;
