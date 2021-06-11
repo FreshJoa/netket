@@ -243,7 +243,6 @@ class VariationalMonteCarlo {
 
       if(actual_energy.first < (last_energy.first + 3.0*std::sqrt(last_energy.second))){
         last_energy = actual_energy;
-        waiting_step = 0;
         pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
         fine_visible_neuron_val = sampler_.Visible();
@@ -251,7 +250,7 @@ class VariationalMonteCarlo {
         energy_grad = UpdateParameters();
 
       }
-      else if(learning_rate < 0.00000000000001){
+      else if(learning_rate < 0.0000000001){
         break;
       }
       else{
@@ -260,9 +259,8 @@ class VariationalMonteCarlo {
         sampler_.SetVisible(fine_visible_neuron_val);
         double new_lr = opt_.GetLearningRate();
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
-        waiting_step = 0;
         UpdateParametersAfterChangeLr(fine_energy_grad);
-//        continue;
+        continue;
         }
 
 
