@@ -174,7 +174,7 @@ class VariationalMonteCarlo {
   std::pair<double, double> Advance(Index steps = 1) {
     assert(steps > 0);
     double return_energy;
-    double return_variance;
+    double return_sigma;
     for (Index i = 0; i < steps; ++i) {
       vmc_data_ = vmc::ComputeSamples(sampler_, nsamples_node_, ndiscard_);
 
@@ -184,7 +184,7 @@ class VariationalMonteCarlo {
 
       observable_stats_["Energy"] = energy;
       return_energy = double(energy.mean);
-      return_variance = double(variance.mean);
+      return_sigma = double(energy.sigma);
 
 
       observable_stats_["EnergyVariance"] = variance;
@@ -199,7 +199,7 @@ class VariationalMonteCarlo {
 
 //      UpdateParameters();
     }
-    return std::make_pair(return_energy, return_variance);
+    return std::make_pair(return_energy, return_sigma);
   }
 
 
@@ -241,7 +241,7 @@ class VariationalMonteCarlo {
       step += step_size;
       learning_rate = opt_.GetLearningRate();
 
-      if(actual_energy.first < (last_energy.first + 3.0*std::sqrt(last_energy.second))){
+      if(actual_energy.first < (last_energy.first + 3.0*last_energy.second)){
         last_energy = actual_energy;
         pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
@@ -250,7 +250,7 @@ class VariationalMonteCarlo {
         energy_grad = UpdateParameters();
 
       }
-      else if(learning_rate < 0.0000000001){
+      else if(learning_rate < 0.00000001){
         break;
       }
       else{
