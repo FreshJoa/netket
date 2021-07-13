@@ -244,7 +244,7 @@ class VariationalMonteCarlo {
       step += step_size;
       learning_rate = opt_.GetLearningRate();
 
-      if(actual_energy.first < (last_energy.first + 3.0*last_energy.second)){
+      if(actual_energy.first < (last_energy.first + 4.0*last_energy.second)){
         last_energy = actual_energy;
         pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
