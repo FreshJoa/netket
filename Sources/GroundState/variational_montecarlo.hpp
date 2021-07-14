@@ -224,7 +224,8 @@ class VariationalMonteCarlo {
 
     opt_.Reset(); // opt_ - optimizer
     std::pair<double, double> last_energy = Advance(step_size);
-    auto pars = psi_.GetParameters();
+    auto last_pars = psi_.GetParameters();
+    auto actual_pars = last_pars;
     auto energy_grad = UpdateParameters();
     auto fine_energy_grad = energy_grad;
     auto fine_visible_neuron_val = sampler_.Visible();
@@ -234,19 +235,21 @@ class VariationalMonteCarlo {
     int waiting_step = 0;
     double learning_rate = 0.0;
     double divided_lr = 2.0;
+    int chance = 0;
 
     while (!n_iter.has_value() || step < *n_iter) {
 
       std::pair<double, double> actual_energy = Advance(step_size); //step_size =1
-      InfoMessage() << "Energy " << actual_energy.first  << std::endl;
-      InfoMessage() << "sigma " << actual_energy.second  << std::endl;
-
       step += step_size;
       learning_rate = opt_.GetLearningRate();
 
-      if(actual_energy.first < (last_energy.first + 4.0*last_energy.second)){
+      if(actual_energy.first < (last_energy.first + 3*last_energy.second)){
+
+        chance = 0;
         last_energy = actual_energy;
-        pars = psi_.GetParameters();
+        InfoMessage() << "iteration" << step <<" new energy " << actual_energy.first <<std::endl;
+        last_pars = actual_pars;
+        actual_pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
         fine_visible_neuron_val = sampler_.Visible();
 
@@ -256,13 +259,22 @@ class VariationalMonteCarlo {
       else if(learning_rate < 0.00000001){
         break;
       }
+      else if(chance < 10){
+        chance ++;
+        InfoMessage() <<"iteration "<< step<< ", wait" <<std::endl;
+        auto not_matter = UpdateParameters();
+        continue;
+      }
       else{
+         InfoMessage() <<"iteration "<< step<<  ", change lr" <<std::endl;
         opt_.SetLearningRate((double)1.0/divided_lr);
-        psi_.SetParameters(pars);
+        psi_.SetParameters(last_pars);
+        actual_pars = last_pars;
         sampler_.SetVisible(fine_visible_neuron_val);
         double new_lr = opt_.GetLearningRate();
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
         UpdateParametersAfterChangeLr(fine_energy_grad);
+        chance = 0;
         continue;
         }
 
