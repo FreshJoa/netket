@@ -252,6 +252,9 @@ class VariationalMonteCarlo {
         actual_pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
         fine_visible_neuron_val = sampler_.Visible();
+        InfoMessage() << "visiable neurons" << fine_visible_neuron_val <<std::endl;
+
+
 
         energy_grad = UpdateParameters();
 
