@@ -108,9 +108,11 @@ class BoseHubbard : public AbstractOperator {
       // on-site interaction
       mel[0] += 0.5 * U_ * v(i) * (v(i) - 1);
 
+      mel[0] +=  V_/6.0 * v(i) * (v(i) - 1)*(v(i) - 2);
+
       for (auto bond : bonds_[i]) {
         // nn interaction
-        mel[0] += V_ * v(i) * v(bond);
+//        mel[0] += V_ * v(i) * v(bond);
         // hopping
         if (v(i) > 0 && v(bond) < nmax_) {
           connectors.push_back(std::vector<int>({i, bond}));
