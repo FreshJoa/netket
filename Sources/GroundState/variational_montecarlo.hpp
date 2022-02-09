@@ -247,14 +247,10 @@ class VariationalMonteCarlo {
 
         chance = 0;
         last_energy = actual_energy;
-        InfoMessage() << "iteration" << step <<" new energy " << actual_energy.first <<std::endl;
         last_pars = actual_pars;
         actual_pars = psi_.GetParameters();
         fine_energy_grad = energy_grad;
         fine_visible_neuron_val = sampler_.Visible();
-        InfoMessage() << "visiable neurons" << fine_visible_neuron_val <<std::endl;
-
-
 
         energy_grad = UpdateParameters();
 
@@ -264,12 +260,10 @@ class VariationalMonteCarlo {
       }
       else if(chance < 10){
         chance ++;
-        InfoMessage() <<"iteration "<< step<< ", wait" <<std::endl;
         auto not_matter = UpdateParameters();
         continue;
       }
       else{
-         InfoMessage() <<"iteration "<< step<<  ", change lr" <<std::endl;
         opt_.SetLearningRate((double)1.0/divided_lr);
         psi_.SetParameters(last_pars);
         actual_pars = last_pars;
