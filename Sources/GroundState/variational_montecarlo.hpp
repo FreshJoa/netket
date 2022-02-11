@@ -272,6 +272,7 @@ class VariationalMonteCarlo {
         fout_lr << new_lr << ", " << step << ", " << divided_lr << "\n";
         UpdateParametersAfterChangeLr(fine_energy_grad);
         chance = 0;
+
         continue;
         }
 
